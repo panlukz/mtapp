@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using B3MobileApp.Services;
 using GalaSoft.MvvmLight.Ioc;
+using Newtonsoft.Json;
 using Plugin.Geolocator.Abstractions;
 
 namespace B3MobileApp.Model
 {
+    [JsonObject(MemberSerialization.OptIn)]
     public class Activity
     {
         private readonly IGeolocator _geolocatorService;
@@ -37,6 +39,7 @@ namespace B3MobileApp.Model
             ActuallPosition = newPosition;
         }
 
+        [JsonProperty("latlngs")]
         public List<Position> Positions { get; set; }
 
         private Position _actuallPosition;
@@ -64,7 +67,7 @@ namespace B3MobileApp.Model
                 ActuallPositionChanged(this, new Model.PositionEventArgs() { Position = _actuallPosition});
         }
 
-
+        [JsonProperty("distance")]
         public double Distance { get; set; }
 
         public bool IsEnded { get; set; }
@@ -80,7 +83,7 @@ namespace B3MobileApp.Model
             await _geolocatorService.StopListeningAsync();
 
             //sending a post is disabled, beacause it doesn't work for unknow reason
-            //await _activityDataService.SaveActivity(this);
+            await _activityDataService.SaveActivity(this);
 
             IsEnded = true;
         }
