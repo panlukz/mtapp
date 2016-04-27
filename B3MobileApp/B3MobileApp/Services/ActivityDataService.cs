@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using B3MobileApp.Helpers;
 using B3MobileApp.Model;
 using Newtonsoft.Json;
 
@@ -11,35 +14,54 @@ namespace B3MobileApp.Services
     internal class ActivityDataService : IActivityDataService
     {
         private readonly HttpClient _httpClient;
+        private readonly Uri _restUri;
 
         public ActivityDataService()
         {
-            _httpClient = new HttpClient();
+            var httpClientHandler = new HttpClientHandler()
+            {
+                MaxRequestContentBufferSize = 256000
+            };
+
+            //TODO consider to use an interface of httpclient and inject it
+            _httpClient = new HttpClient(httpClientHandler);
+
+            //TODO firstly, check if it isn't null, empty or whitespace
+            _restUri = new Uri(Settings.ActivityRestUri);
         }
 
-        public async Task<string> SaveActivity(Activity activity)
+        public async Task SaveActivity(Activity activity)
         {
-            var restUrl = "http://192.168.1.2:58938/api/activity";
-            var uri = new Uri(string.Format(restUrl));
 
-            var json = JsonConvert.SerializeObject(activity);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var activityJson = JsonConvert.SerializeObject(activity);
+            var activityHttpContent = new StringContent(activityJson, Encoding.UTF8, "application/json");
 
+            //delete line below (or set more rational timeout). it was set for tests purposes only
+            //_httpClient.Timeout = TimeSpan.FromSeconds(1);
 
-            HttpResponseMessage response = null;
-            response = await _httpClient.PostAsync(uri, content);
+            //HttpResponseMessage response = null;
+            var cts = new CancellationTokenSource();
 
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                Debug.WriteLine("Activity successfully saved on server.");
+                var response = await _httpClient.PostAsync(_restUri, activityHttpContent, cts.Token);
+                response.EnsureSuccessStatusCode();
             }
-            else
+            catch (HttpRequestException ex)
             {
-                Debug.WriteLine("Something went wrong...");
+                //TODO log an http exception ex.ToString()
             }
-
-            return await response.Content.ReadAsStringAsync();
+            catch (TaskCanceledException ex)
+            {
+                if (ex.CancellationToken == cts.Token)
+                {
+                    //TODO log a cancellation triggered by the caller
+                }
+                else
+                {
+                    //TODO log a web request timeout
+                }
+            }
 
         }
 

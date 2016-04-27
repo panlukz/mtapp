@@ -5,6 +5,6 @@ namespace B3MobileApp.Services
 {
     public interface IActivityDataService
     {
-        Task<string> SaveActivity(Activity activity);
+        Task SaveActivity(Activity activity);
     }
 }
