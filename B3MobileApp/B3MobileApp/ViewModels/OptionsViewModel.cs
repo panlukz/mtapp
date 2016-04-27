@@ -1,6 +1,8 @@
-﻿using GalaSoft.MvvmLight;
+﻿using B3MobileApp.Helpers;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Views;
+using Plugin.Settings.Abstractions;
 
 namespace B3MobileApp.ViewModels
 {
@@ -11,6 +13,9 @@ namespace B3MobileApp.ViewModels
         public OptionsViewModel(INavigationService navigationService)
         {
             _navigationService = navigationService;
+
+            MinDistance = Settings.GpsMinDistance;
+            MinTime = Settings.GpsMinTime;
         }
 
         private int _minDistance;
@@ -35,6 +40,17 @@ namespace B3MobileApp.ViewModels
             }
         }
 
+        private string _postWebServiceUri;
+        public string PostWebServiceUri
+        {
+            get { return _postWebServiceUri; }
+            set
+            {
+                _postWebServiceUri = value;
+                RaisePropertyChanged(() => PostWebServiceUri);
+            }
+        }
+
         private RelayCommand _saveCommand;
         public RelayCommand SaveCommand
         {
@@ -46,6 +62,8 @@ namespace B3MobileApp.ViewModels
 
         private void Save()
         {
+            Settings.GpsMinDistance = MinDistance;
+            Settings.GpsMinTime = MinTime;
             _navigationService.NavigateTo(ViewModelLocator.ActivityView);
         }
     }
