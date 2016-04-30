@@ -13,11 +13,13 @@ namespace B3MobileApp.Services
 {
     internal class ActivityDataService : IActivityDataService
     {
+        private readonly ILogger _logger;
         private readonly HttpClient _httpClient;
         private readonly Uri _restUri;
 
-        public ActivityDataService()
+        public ActivityDataService(ILogger logger)
         {
+            _logger = logger;
             var httpClientHandler = new HttpClientHandler()
             {
                 MaxRequestContentBufferSize = 256000
@@ -27,7 +29,9 @@ namespace B3MobileApp.Services
             _httpClient = new HttpClient(httpClientHandler);
 
             //TODO firstly, check if it isn't null, empty or whitespace
-            _restUri = new Uri(Settings.ActivityRestUri);
+            //_restUri = new Uri(Settings.ActivityRestUri);
+            //TODO replaced for tests
+            _restUri = new Uri("http://192.168.1.2:58938/api/activity");
         }
 
         public async Task SaveActivity(Activity activity)
@@ -36,10 +40,6 @@ namespace B3MobileApp.Services
             var activityJson = JsonConvert.SerializeObject(activity);
             var activityHttpContent = new StringContent(activityJson, Encoding.UTF8, "application/json");
 
-            //delete line below (or set more rational timeout). it was set for tests purposes only
-            //_httpClient.Timeout = TimeSpan.FromSeconds(1);
-
-            //HttpResponseMessage response = null;
             var cts = new CancellationTokenSource();
 
             try
@@ -49,17 +49,19 @@ namespace B3MobileApp.Services
             }
             catch (HttpRequestException ex)
             {
-                //TODO log an http exception ex.ToString()
+                _logger.Log(ex.ToString(), "SaveActivity", LogType.Error);
+                throw new Exception("Http request error while sending activity to server.");
             }
             catch (TaskCanceledException ex)
             {
                 if (ex.CancellationToken == cts.Token)
                 {
-                    //TODO log a cancellation triggered by the caller
+                    _logger.Log("Activity send was canceled by user", "SaveActivity", LogType.Info);
                 }
                 else
                 {
-                    //TODO log a web request timeout
+                    _logger.Log("Http request timeout", "SaveActivity", LogType.Error);
+                    throw new Exception("Http request timeout while sending activity to server.");
                 }
             }
 

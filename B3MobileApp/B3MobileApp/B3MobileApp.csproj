@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="App.cs" />
     <Compile Include="Helpers\DialogService.cs" />
+    <Compile Include="Helpers\ILogger.cs" />
     <Compile Include="Helpers\NavigationService.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Model\Position.cs" />

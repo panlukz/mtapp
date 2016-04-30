@@ -20,7 +20,13 @@ namespace B3MobileApp
 
         public App()
         {
+            //Setup logger service
+            var logger = DependencyService.Get<ILogger>();
+            SimpleIoc.Default.Register<ILogger>(() => logger);
 
+            logger.Log("Starting application", "App");
+
+            logger.Log("Wrapping up navigation service", "App");
             //Setup navigation service
             var nav = new NavigationService();
             nav.Configure(ViewModelLocator.MainView, typeof(MainView));
@@ -29,10 +35,12 @@ namespace B3MobileApp
             
             SimpleIoc.Default.Register<INavigationService>(() => nav);
 
+            logger.Log("Wrapping up dialog service", "App");
             //Setup dialog service
             var dialog = new DialogService();
             SimpleIoc.Default.Register<IDialogService>(() => dialog);
 
+            logger.Log("Wrapping up geolocator service", "App");
             //Setup geolocator service
             var geolocator = CrossGeolocator.Current;
             SimpleIoc.Default.Register<IGeolocator>(() => geolocator);
