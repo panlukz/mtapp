@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using FreshMvvm;
+using Mtapp.PageModels;
 using Xamarin.Forms;
 
 namespace Mtapp
@@ -11,20 +12,18 @@ namespace Mtapp
     {
         public App()
         {
-            // The root page of your application
-            MainPage = new ContentPage
-            {
-                Content = new StackLayout
-                {
-                    VerticalOptions = LayoutOptions.Center,
-                    Children = {
-                        new Label {
-                            XAlign = TextAlignment.Center,
-                            Text = "Welcome to Xamarin Forms!"
-                        }
-                    }
-                }
-            };
+            SetupNavigation();
+        }
+
+        public void SetupNavigation()
+        {
+            var masterDetailNav = new FreshMasterDetailNavigationContainer();
+            masterDetailNav.Init("Menu");
+            masterDetailNav.AddPage<MainPageModel>("Dashboard");
+            masterDetailNav.AddPage<ActivityPageModel>("Activity");
+            masterDetailNav.AddPage<HistoryPageModel>("History");
+            masterDetailNav.AddPage<SettingsPageModel>("Settings");
+            MainPage = masterDetailNav;
         }
 
         protected override void OnStart()
