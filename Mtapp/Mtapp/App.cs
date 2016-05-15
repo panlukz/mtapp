@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Autofac;
 using FreshMvvm;
+using Mtapp.Helpers;
 using Mtapp.PageModels;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
@@ -33,6 +34,10 @@ namespace Mtapp
         private void SetupIoc()
         {
             var containerBuilder = new ContainerBuilder();
+
+            //Setup logger service
+            var logger = DependencyService.Get<ILogger>();
+            containerBuilder.RegisterInstance(logger).As<ILogger>();
 
             //Setup geolocator service
             var geolocator = CrossGeolocator.Current;
