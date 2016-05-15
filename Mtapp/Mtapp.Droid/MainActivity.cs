@@ -9,7 +9,7 @@ using Android.OS;
 
 namespace Mtapp.Droid
 {
-    [Activity(Label = "Mtapp", Icon = "@drawable/icon", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
+    [Activity(Label = "Mtapp", Icon = "@drawable/icon", Theme = "@android:style/Theme.Holo.Light", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
     public class MainActivity : global::Xamarin.Forms.Platform.Android.FormsApplicationActivity
     {
         protected override void OnCreate(Bundle bundle)
@@ -17,8 +17,16 @@ namespace Mtapp.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+            Xamarin.FormsMaps.Init(this, bundle);
+
             LoadApplication(new App());
         }
+
+        public override void OnBackPressed()
+        {
+            
+        }
+
     }
 }
 

@@ -1,6 +1,79 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customControls="clr-namespace:Mtapp.Pages.CustomControls;assembly=Mtapp"
              x:Class="Mtapp.Pages.ActivityPage">
-  <Label Text="activity page" VerticalOptions="Center" HorizontalOptions="Center" />
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1.4*" />
+      <RowDefinition Height="4*" />
+      <RowDefinition Height="0.7*" />
+      <RowDefinition Height="1*" />
+    </Grid.RowDefinitions>
+
+    <Grid Grid.Row="0">
+      <Grid.RowDefinitions>
+        <RowDefinition />
+        <RowDefinition />
+      </Grid.RowDefinitions>
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition />
+        <ColumnDefinition />
+        <ColumnDefinition />
+      </Grid.ColumnDefinitions>
+
+      <StackLayout Grid.Column="0" Grid.Row="0">
+        <Label Text="Altitude" HorizontalOptions="Center" />
+        <Label Text="{Binding ActuallPosition.Altitude}" HorizontalOptions="Center" />
+      </StackLayout>
+      <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="0">
+        <Label Text="Longitude" HorizontalOptions="Center" />
+        <Label Text="{Binding ActuallPosition.Longitude}" HorizontalOptions="Center" />
+      </StackLayout>
+      <StackLayout Orientation="Vertical" Grid.Column="2" Grid.Row="0">
+        <Label Text="Latitude" HorizontalOptions="Center" />
+        <Label Text="{Binding ActuallPosition.Latitude}" HorizontalOptions="Center" />
+      </StackLayout>
+      <StackLayout Orientation="Vertical" Grid.Column="0" Grid.Row="1">
+        <Label Text="Distance" HorizontalOptions="Center" />
+        <Label Text="000" HorizontalOptions="Center" />
+      </StackLayout>
+      <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+        <Label Text="Speed" HorizontalOptions="Center" />
+        <Label Text="{Binding ActuallPosition.Speed}" HorizontalOptions="Center" />
+      </StackLayout>
+      <StackLayout Orientation="Vertical" Grid.Column="2" Grid.Row="1">
+        <Label Text="GPS" HorizontalOptions="Center" />
+        <Label Text="000" HorizontalOptions="Center" />
+      </StackLayout>
+
+    </Grid>
+
+    <customControls:CustomMap Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                              x:Name="ActivityMap"
+                              IsShowingUser="true"
+                              MapType="Street"
+                              Positions="{Binding ActivityManager.CurrentActivity.Positions}"
+                              ActuallPosition="{Binding ActivityManager.ActuallPosition}"
+                                  />
+
+    <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="15" HorizontalOptions="Center">
+      <Button Text="StartNew activity" Command="{Binding StartActivityCommand}" BackgroundColor="Green"
+              BorderRadius="20" />
+
+      <Button Text="StopCurrent activity" Command="{Binding EndActivityCommand}" BackgroundColor="Red"
+                BorderRadius="20" />
+    </StackLayout>
+
+
+    <ScrollView Grid.Row="3">
+      <ScrollView.Content>
+        <StackLayout Padding="15, 10">
+          <Label Text="Debug console: (double tap to expand)" />
+
+        </StackLayout>
+      </ScrollView.Content>
+    </ScrollView>
+
+  </Grid>
 </ContentPage>

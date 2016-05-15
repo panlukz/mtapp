@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Autofac;
 using FreshMvvm;
 using Mtapp.PageModels;
+using Plugin.Geolocator;
+using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms;
 
 namespace Mtapp
@@ -12,10 +15,11 @@ namespace Mtapp
     {
         public App()
         {
+            SetupIoc();
             SetupNavigation();
         }
 
-        public void SetupNavigation()
+        private void SetupNavigation()
         {
             var masterDetailNav = new FreshMasterDetailNavigationContainer();
             masterDetailNav.Init("Menu");
@@ -24,6 +28,21 @@ namespace Mtapp
             masterDetailNav.AddPage<HistoryPageModel>("History");
             masterDetailNav.AddPage<SettingsPageModel>("Settings");
             MainPage = masterDetailNav;
+        }
+
+        private void SetupIoc()
+        {
+            var containerBuilder = new ContainerBuilder();
+
+            //Setup geolocator service
+            var geolocator = CrossGeolocator.Current;
+            geolocator.AllowsBackgroundUpdates = true;
+            containerBuilder.RegisterInstance<IGeolocator>(geolocator);
+
+            //Setup activity manager
+
+
+            containerBuilder.Build();
         }
 
         protected override void OnStart()

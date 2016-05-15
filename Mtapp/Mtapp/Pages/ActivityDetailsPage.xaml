@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customControls="clr-namespace:Mtapp.Pages.CustomControls;assembly=Mtapp"
+             x:Class="Mtapp.Pages.ActivityDetailsPage">
+  <ContentPage.ToolbarItems>
+    <ToolbarItem Text="History" Command="{Binding ShowHistoryCommand}" />
+  </ContentPage.ToolbarItems>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+      <RowDefinition />
+    </Grid.RowDefinitions>
+    <Label Text="Activity summary:" />
+    <customControls:CustomMap Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                          x:Name="ActivityDetailsMap"
+                          MapType="Street"
+                          Positions="{Binding Activity.Positions}"
+                          IsShowingUser="True"
+                           />
+    
+    <StackLayout Grid.Row="2">
+      <Label Text="Activity name:" />
+      <Entry Text="{Binding Activity.Name}" />
+    </StackLayout>
+    
+    <StackLayout Grid.Row="3">
+      <Label Text="Activity description:" />
+      <Editor Text="{Binding Activity.Description}" VerticalOptions="FillAndExpand"/>
+    </StackLayout>
+    
+    <StackLayout Grid.Row="4" Orientation="Vertical">
+      <Button Text="Save" Command="{Binding SaveActivityCommand}" />
+      <Button Text="Reject" Command="{Binding RejectActivityCommand}" />
+    </StackLayout>
+
+  </Grid>
+</ContentPage>
