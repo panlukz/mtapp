@@ -3,26 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Mtapp.Services;
 using Plugin.Geolocator.Abstractions;
 using PropertyChanged;
 
 namespace Mtapp.Models
 {
     [ImplementPropertyChanged]
-    public class ActivityManager
+    public class ActivityManager : IActivityManager
     {
         private readonly IGeolocator _geolocatorService;
+        private readonly IActivityLocalDataService _activityLocalDataService;
 
-        public ActivityManager(IGeolocator geolocatorService)
+        public ActivityManager(IGeolocator geolocatorService, IActivityLocalDataService activityLocalDataService)
         {
             _geolocatorService = geolocatorService;
+            _activityLocalDataService = activityLocalDataService;
             _geolocatorService.PositionChanged += OnPositionChanged;
 
         }
 
         private void ActivityInit()
         {
-            CurrentActivity = new Activity {Status = ActivityStatus.New};
+            CurrentActivity = new Activity
+            {
+                Id = Guid.NewGuid().ToString(),
+                Status = ActivityStatus.New
+            };
         }
 
         private void OnPositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
@@ -85,6 +92,7 @@ namespace Mtapp.Models
         {
             await _geolocatorService.StopListeningAsync();
             CurrentActivity.Status = ActivityStatus.Stopped;
+            _activityLocalDataService.SaveActivity(CurrentActivity);
 
         }
     }

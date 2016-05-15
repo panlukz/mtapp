@@ -17,11 +17,6 @@ namespace Mtapp.Models
             Positions = new List<ActivityPosition>();
         }
 
-        public Activity(string id) : this()
-        {
-            Id = id;
-        }
-
         [JsonProperty("id")]
         public string Id { get; set; }
 

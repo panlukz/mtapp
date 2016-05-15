@@ -34,17 +34,17 @@ namespace Mtapp.Pages.CustomControls
             set { this.SetValue(PositionsProperty, value); }
         }
 
-        public static readonly BindableProperty ActuallPositionProperty = BindableProperty.Create(
-            propertyName: "ActuallPosition",
+        public static readonly BindableProperty ActualPositionProperty = BindableProperty.Create(
+            propertyName: "ActualPosition",
             returnType: typeof(ActivityPosition),
             declaringType: typeof(CustomMap),
             defaultValue: new ActivityPosition(),
             defaultBindingMode: BindingMode.OneWay,
             validateValue: null,
-            propertyChanged: ActuallPositionsChanged
+            propertyChanged: ActualPositionsChanged
             );
 
-        private static void ActuallPositionsChanged(BindableObject bindable, object oldvalue, object newvalue)
+        private static void ActualPositionsChanged(BindableObject bindable, object oldvalue, object newvalue)
         {
             //TODO make a follow functionality (MoveToRegion) possible to turn off
             var newPosition = (ActivityPosition)newvalue;
@@ -57,8 +57,8 @@ namespace Mtapp.Pages.CustomControls
 
         public ActivityPosition ActuallPosition
         {
-            get { return (ActivityPosition)this.GetValue(ActuallPositionProperty); }
-            set { this.SetValue(ActuallPositionProperty, value); }
+            get { return (ActivityPosition)this.GetValue(ActualPositionProperty); }
+            set { this.SetValue(ActualPositionProperty, value); }
         }
 
         #endregion

@@ -67,7 +67,7 @@ namespace Mtapp.Droid.Renderers
 
             var customMap = ((CustomMap)sender);
 
-            if (e.PropertyName == CustomMap.ActuallPositionProperty.PropertyName)
+            if (e.PropertyName == CustomMap.ActualPositionProperty.PropertyName)
             {
                 if (_lastPosition == null)
                 {

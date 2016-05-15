@@ -12,17 +12,13 @@ namespace Mtapp.PageModels
     public class ActivityPageModel : FreshBasePageModel
     {
         //TODO for tests only!!!
-        private ActivityManager _activityManager;
-        public ActivityManager ActivityManager
-        {
-            get
-            {
-                if(_activityManager == null)
-                    _activityManager = new ActivityManager(CrossGeolocator.Current);
 
-                return _activityManager;
-            }
+        public ActivityPageModel(IActivityManager activityManager)
+        {
+            ActivityManager = activityManager;
         }
+
+        public IActivityManager ActivityManager { get; set; }
 
         #region Properties
 

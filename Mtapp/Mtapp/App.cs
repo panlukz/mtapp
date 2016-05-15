@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Autofac;
 using FreshMvvm;
+using FreshTinyIoC;
 using Mtapp.Helpers;
+using Mtapp.Models;
 using Mtapp.PageModels;
+using Mtapp.Services;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms;
@@ -33,21 +35,21 @@ namespace Mtapp
 
         private void SetupIoc()
         {
-            var containerBuilder = new ContainerBuilder();
-
             //Setup logger service
             var logger = DependencyService.Get<ILogger>();
-            containerBuilder.RegisterInstance(logger).As<ILogger>();
+            FreshIOC.Container.Register<ILogger>(logger);
 
             //Setup geolocator service
             var geolocator = CrossGeolocator.Current;
             geolocator.AllowsBackgroundUpdates = true;
-            containerBuilder.RegisterInstance<IGeolocator>(geolocator);
+            FreshIOC.Container.Register<IGeolocator>(geolocator);
 
-            //Setup activity manager
+            //Setup activity local data service
+            var activityLocalDs = DependencyService.Get<IActivityLocalDataService>();
+            FreshIOC.Container.Register<IActivityLocalDataService>(activityLocalDs);
 
+            FreshIOC.Container.Register<IActivityManager, ActivityManager>(); // Singleton 
 
-            containerBuilder.Build();
         }
 
         protected override void OnStart()

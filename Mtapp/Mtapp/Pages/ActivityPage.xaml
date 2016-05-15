@@ -54,7 +54,7 @@
                               IsShowingUser="true"
                               MapType="Street"
                               Positions="{Binding ActivityManager.CurrentActivity.Positions}"
-                              ActuallPosition="{Binding ActivityManager.ActuallPosition}"
+                              ActualPosition="{Binding ActivityManager.ActualPosition}"
                                   />
 
     <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="15" HorizontalOptions="Center">
