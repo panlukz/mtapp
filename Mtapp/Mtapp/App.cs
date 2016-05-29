@@ -7,6 +7,7 @@ using FreshTinyIoC;
 using Mtapp.Helpers;
 using Mtapp.Models;
 using Mtapp.PageModels;
+using Mtapp.Pages.Containers;
 using Mtapp.Services;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
@@ -24,8 +25,8 @@ namespace Mtapp
 
         private void SetupNavigation()
         {
-            var masterDetailNav = new FreshMasterDetailNavigationContainer();
-            masterDetailNav.Init("Menu");
+            var masterDetailNav = new CustomMasterDetailNavigationContainer();
+            masterDetailNav.Init("Menu", "hamburger.png");
             masterDetailNav.AddPage<MainPageModel>("Dashboard");
             masterDetailNav.AddPage<ActivityPageModel>("Activity");
             masterDetailNav.AddPage<HistoryPageModel>("History");

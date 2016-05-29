@@ -23,6 +23,29 @@ namespace Mtapp.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        public DateTime Date
+        {
+            get
+            {
+                if (Positions.Count > 0)
+                    return Positions[0].Timestamp;
+                else
+                    //TODO for tests
+                    return new DateTime();
+            }
+        }
+
+        public TimeSpan TotalTime
+        {
+            get
+            {
+                if (Positions.Count > 0)
+                    return (Positions.Last().Timestamp - Positions.First().Timestamp);
+
+                return TimeSpan.Zero;
+            }
+        }
+
         [JsonProperty("desc")]
         public string Description { get; set; }
 

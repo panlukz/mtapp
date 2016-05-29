@@ -37,7 +37,7 @@ namespace Mtapp.PageModels
                     {
                         try
                         {
-                            ActivityManager.StartActivity();
+                            await ActivityManager.StartActivityAsync();
                             IsActivityStarted = true;
                         }
                         catch (Exception ex)
@@ -60,7 +60,7 @@ namespace Mtapp.PageModels
 
                         if (decision)
                         {
-                            ActivityManager.StopActivity();
+                            await ActivityManager.StopActivityAsync();
                             await CoreMethods.PushPageModel<ActivityDetailsPageModel>(ActivityManager.CurrentActivity);
                             IsActivityStarted = false;
                         }

@@ -1,6 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mtapp.Pages.SettingsPage">
-  <Label Text="settings page" VerticalOptions="Center" HorizontalOptions="Center" />
+             x:Class="Mtapp.Pages.SettingsPage"
+             Title="Settings">
+  
+  <TableView Intent="Settings">
+    <TableRoot>
+      <TableSection Title="Gps settings">
+        <ViewCell>
+          <StackLayout Orientation="Horizontal" Padding="16, 0" WidthRequest="100">
+            <Label Text="Gps min distance (m)" WidthRequest="100" VerticalOptions="Center"/>
+            <Label BindingContext="{x:Reference GpsMinDistanceSlider}" VerticalOptions="Center" Text="{Binding Value, StringFormat='{0:N0}'}" WidthRequest="50" />
+            <Slider x:Name="GpsMinDistanceSlider" HorizontalOptions="FillAndExpand" Maximum="10" Minimum="1" Value="{Binding GpsMinDistance}"/>
+          </StackLayout>
+        </ViewCell>
+        <ViewCell>
+          <StackLayout Orientation="Horizontal" Padding="16, 0">
+            <Label Text="Gps min time (ms)" VerticalOptions="Center" WidthRequest="100" />
+            <Label BindingContext="{x:Reference GpsMinTimeSlider}" Text="{Binding Value, StringFormat='{0:N0}'}" VerticalOptions="Center" WidthRequest="50" />
+            <Slider x:Name="GpsMinTimeSlider" HorizontalOptions="FillAndExpand" Maximum="5000" Minimum="100" Value="{Binding GpsMinTime}"/>
+          </StackLayout>
+        </ViewCell>
+        <ViewCell>
+          <StackLayout Orientation="Horizontal" Padding="16, 0">
+            <Label Text="Gps desired accuracy (m)" VerticalOptions="Center" WidthRequest="100" />
+            <Label BindingContext="{x:Reference GpsDesiredAccuracySlider}" Text="{Binding Value, StringFormat='{0:N0}'}" VerticalOptions="Center" WidthRequest="50" />
+            <Slider x:Name="GpsDesiredAccuracySlider" HorizontalOptions="FillAndExpand" Maximum="50" Minimum="1" Value="{Binding GpsDesiredAccuracy}"/>
+          </StackLayout>
+        </ViewCell>
+        <ViewCell>
+          <StackLayout Orientation="Horizontal" Padding="16, 0">
+            <Label Text="Gps min accuracy (m)" VerticalOptions="Center" WidthRequest="100" />
+            <Label BindingContext="{x:Reference GpsMinAccuracySlider}" Text="{Binding Value, StringFormat='{0:N0}'}" VerticalOptions="Center" WidthRequest="50" />
+            <Slider x:Name="GpsMinAccuracySlider" HorizontalOptions="FillAndExpand" Maximum="20" Minimum="1" Value="{Binding GpsMinAccuracy}"/>
+          </StackLayout>
+        </ViewCell>
+      </TableSection>
+      <TableSection Title="Api endpoints urls">
+        <EntryCell Label="Activity:" Text="{Binding ActivityRestUri}" />
+      </TableSection>
+    </TableRoot>
+  </TableView>
+
 </ContentPage>

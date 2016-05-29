@@ -1,26 +1,68 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Mtapp.Helpers;
 using Mtapp.Services;
 using Plugin.Geolocator.Abstractions;
 using PropertyChanged;
+using Xamarin.Forms;
 
 namespace Mtapp.Models
 {
     [ImplementPropertyChanged]
     public class ActivityManager : IActivityManager
     {
-        private readonly IGeolocator _geolocatorService;
         private readonly IActivityLocalDataService _activityLocalDataService;
+        private readonly IGeolocator _geolocatorService;
 
         public ActivityManager(IGeolocator geolocatorService, IActivityLocalDataService activityLocalDataService)
         {
             _geolocatorService = geolocatorService;
             _activityLocalDataService = activityLocalDataService;
             _geolocatorService.PositionChanged += OnPositionChanged;
+        }
 
+
+        /// <summary>
+        ///     This method starts a new activity.
+        /// </summary>
+        public async Task StartActivityAsync()
+        {
+            ActivityInit();
+            try
+            {
+                _geolocatorService.DesiredAccuracy = Settings.GpsDesiredAccuracy;
+                await _geolocatorService.StartListeningAsync(Settings.GpsMinTime, Settings.GpsMinDistance);
+
+                ActualTimeSpan = TimeSpan.Zero;
+
+                Device.StartTimer(TimeSpan.FromSeconds(1), () =>
+                {
+                    if(CurrentActivity.Positions.Count > 0)
+                        ActualTimeSpan += TimeSpan.FromSeconds(1);
+
+                    if (CurrentActivity.Status == ActivityStatus.Started)
+                        return true;
+
+                    return false;
+                });
+
+                CurrentActivity.Status = ActivityStatus.Started;
+            }
+            catch (GeolocationException ex)
+            {
+                //TODO log here
+                throw;
+            }
+        }
+
+        /// <summary>
+        ///     This method ends current activity.
+        /// </summary>
+        public async Task StopActivityAsync()
+        {
+            await _geolocatorService.StopListeningAsync();
+            CurrentActivity.Status = ActivityStatus.Stopped;
         }
 
         private void ActivityInit()
@@ -32,9 +74,9 @@ namespace Mtapp.Models
             };
         }
 
-        private void OnPositionChanged(object sender, Plugin.Geolocator.Abstractions.PositionEventArgs e)
+        private void OnPositionChanged(object sender, PositionEventArgs e)
         {
-            if (e.Position.Accuracy <= 20)
+            if (e.Position.Accuracy <= Settings.GpsMinAccuracy)
             {
                 var newPosition = new ActivityPosition
                 {
@@ -45,6 +87,13 @@ namespace Mtapp.Models
                     Timestamp = e.Position.Timestamp.DateTime
                 };
 
+                if (CurrentActivity.Positions.Count > 0)
+                {
+                    var lastPosition = CurrentActivity.Positions.Last();
+                    CurrentActivity.Distance += GpsHelper.CalculateDistanceBetweenPoints(lastPosition.Latitude,
+                        lastPosition.Longitude, newPosition.Latitude, newPosition.Longitude);
+                }
+
                 CurrentActivity.Positions.Add(newPosition);
                 ActualPosition = newPosition;
             }
@@ -53,47 +102,17 @@ namespace Mtapp.Models
         #region Properties
 
         /// <summary>
-        /// Property of current activity.
+        ///     Property of current activity.
         /// </summary>
         public Activity CurrentActivity { get; set; }
 
         /// <summary>
-        /// Property represents actual user position.
+        ///     Property represents actual user position.
         /// </summary>
         public ActivityPosition ActualPosition { get; set; }
 
+        public TimeSpan ActualTimeSpan { get; set; }
+
         #endregion
-
-
-        /// <summary>
-        /// This method starts a new activity.
-        /// </summary>
-        public async void StartActivity()
-        {
-            ActivityInit();
-            try
-            {
-                _geolocatorService.DesiredAccuracy = 10;
-                await _geolocatorService.StartListeningAsync(500, 3);
-            }
-            catch (GeolocationException ex)
-            {
-                //TODO log here
-                throw ex;
-            }
-
-            CurrentActivity.Status = ActivityStatus.Started;
-        }
-
-        /// <summary>
-        /// This method ends current activity.
-        /// </summary>
-        public async void StopActivity()
-        {
-            await _geolocatorService.StopListeningAsync();
-            CurrentActivity.Status = ActivityStatus.Stopped;
-            _activityLocalDataService.SaveActivity(CurrentActivity);
-
-        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Android.Gms.Maps;
 using Android.Gms.Maps.Model;
 using Mtapp.Droid.Renderers;
@@ -8,18 +9,32 @@ using Mtapp.Pages.CustomControls;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using Xamarin.Forms.Maps.Android;
+using Xamarin.Forms.Platform.Android;
 
-[assembly: ExportRenderer(typeof(CustomMap), typeof(CustomMapRenderer))]
+[assembly: ExportRenderer(typeof (CustomMap), typeof (CustomMapRenderer))]
+
 namespace Mtapp.Droid.Renderers
 {
     public class CustomMapRenderer : MapRenderer, IOnMapReadyCallback
     {
-        GoogleMap _map;
+        private readonly List<Polyline> _mapPolylines = new List<Polyline>();
+        private readonly List<LatLng> positions = new List<LatLng>();
         private ActivityPosition _lastPosition;
-        private List<Polyline> _mapPolylines = new List<Polyline>();
-        private List<LatLng> positions = new List<LatLng>(); 
+        private GoogleMap _map;
 
-        protected override void OnElementChanged(Xamarin.Forms.Platform.Android.ElementChangedEventArgs<View> e)
+        public void OnMapReady(GoogleMap googleMap)
+        {
+            _map = googleMap;
+            UpdatePolylines();
+
+            if (positions.Count > 1)
+            {
+                var lastPosition = positions.Last();
+                _map.MoveCamera(CameraUpdateFactory.NewLatLng(new LatLng(lastPosition.Latitude, lastPosition.Longitude)));
+            }
+        }
+
+        protected override void OnElementChanged(ElementChangedEventArgs<View> e)
         {
             base.OnElementChanged(e);
 
@@ -30,14 +45,8 @@ namespace Mtapp.Droid.Renderers
 
             if (e.NewElement != null)
             {
-                ((MapView)Control).GetMapAsync(this);
+                ((MapView) Control).GetMapAsync(this);
             }
-        }
-
-        public void OnMapReady(GoogleMap googleMap)
-        {
-            _map = googleMap;
-            UpdatePolylines();
         }
 
         private void UpdatePolylines()
@@ -65,7 +74,7 @@ namespace Mtapp.Droid.Renderers
         {
             base.OnElementPropertyChanged(sender, e);
 
-            var customMap = ((CustomMap)sender);
+            var customMap = (CustomMap) sender;
 
             if (e.PropertyName == CustomMap.ActualPositionProperty.PropertyName)
             {
@@ -87,14 +96,10 @@ namespace Mtapp.Droid.Renderers
                 _mapPolylines.Add(polyline);
 
                 _lastPosition = actuallPosition;
-
             }
 
             if (e.PropertyName == CustomMap.PositionsProperty.PropertyName)
             {
-
-                
-
                 positions.Clear();
 
                 foreach (var position in customMap.Positions)

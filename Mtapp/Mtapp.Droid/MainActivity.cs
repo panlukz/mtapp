@@ -19,6 +19,9 @@ namespace Mtapp.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
 
+            ActionBar.SetIcon(Android.Graphics.Color.Transparent);
+            
+
             LoadApplication(new App());
         }
 

@@ -25,7 +25,6 @@ namespace Mtapp.Pages.CustomControls
 
         private static void PositionsChanged(BindableObject bindable, object oldValue, object newValue)
         {
-
         }
 
         public IList<ActivityPosition> Positions

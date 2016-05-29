@@ -1,10 +1,26 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8"?>
+
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mtapp.Pages.HistoryPage">
-  <StackLayout>
-    <Button Text="history page" Command="{Binding ShowHistoryDetails}" VerticalOptions="Center" HorizontalOptions="Center" />
-    <Stepper></Stepper>
-    <Switch IsToggled="{Binding Decision}"></Switch>
-  </StackLayout>
+             x:Class="Mtapp.Pages.HistoryPage"
+             Title="History list">
+    <ListView x:Name="ActivitiesListView" ItemsSource="{Binding Activities}"
+               HasUnevenRows="True">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell x:Name="ViewCell" Height="60">
+                    <StackLayout Orientation="Vertical" Margin="15, 5">
+                        <StackLayout.GestureRecognizers>
+                          <TapGestureRecognizer
+                                BindingContext="{Binding Source={x:Reference ActivitiesListView}, Path=BindingContext}"
+                                Command="{Binding ShowActivityDetailsCommand}"
+                                CommandParameter="{Binding Source={x:Reference ViewCell}, Path=BindingContext}" />
+                        </StackLayout.GestureRecognizers>
+                        <Label Text="{Binding Name}" FontSize="16" VerticalOptions="StartAndExpand"/>
+                        <Label Text="{Binding Date, StringFormat='{}{0:dd-MM-yyyy}'}" />
+                    </StackLayout>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
 </ContentPage>

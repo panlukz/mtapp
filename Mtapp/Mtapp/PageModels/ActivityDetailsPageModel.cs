@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FreshMvvm;
 using Mtapp.Models;
+using Mtapp.Services;
 using PropertyChanged;
 using Xamarin.Forms;
 
@@ -13,11 +14,12 @@ namespace Mtapp.PageModels
     [ImplementPropertyChanged]
     public class ActivityDetailsPageModel : FreshBasePageModel
     {
+        private readonly IActivityLocalDataService _activityLocalDataService;
         private Activity _activity;
 
-        public ActivityDetailsPageModel()
+        public ActivityDetailsPageModel(IActivityLocalDataService activityLocalDataService)
         {
-
+            _activityLocalDataService = activityLocalDataService;
         }
 
         #region Properties
@@ -50,9 +52,10 @@ namespace Mtapp.PageModels
         {
             get
             {
-                return new Command(() =>
+                return new Command(async () =>
                 {
-                    //TODO Save Activity here!
+                    _activityLocalDataService.SaveActivity(Activity);
+                    await CoreMethods.PopPageModel();
                 });
             }
         }

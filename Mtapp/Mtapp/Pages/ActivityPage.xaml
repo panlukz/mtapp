@@ -2,18 +2,26 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:customControls="clr-namespace:Mtapp.Pages.CustomControls;assembly=Mtapp"
-             x:Class="Mtapp.Pages.ActivityPage">
+             xmlns:converters="clr-namespace:Mtapp.Pages.Converters;assembly=Mtapp"
+             x:Class="Mtapp.Pages.ActivityPage"
+             Title="Current activity">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converters:MetersToKilometersValueConverter x:Key="MetersToKilometersValueConverter" />
+      <converters:MetersPerSecondsToKilometersPerHoursValueConverter 
+        x:Key="MetersPerSecondsToKilometersPerHoursValueConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  
   <Grid>
     <Grid.RowDefinitions>
-      <RowDefinition Height="1.4*" />
+      <RowDefinition Height="1*" />
       <RowDefinition Height="4*" />
-      <RowDefinition Height="0.7*" />
       <RowDefinition Height="1*" />
     </Grid.RowDefinitions>
 
-    <Grid Grid.Row="0">
+    <Grid Grid.Row="0" Margin="10, 20">
       <Grid.RowDefinitions>
-        <RowDefinition />
         <RowDefinition />
       </Grid.RowDefinitions>
       <Grid.ColumnDefinitions>
@@ -22,29 +30,24 @@
         <ColumnDefinition />
       </Grid.ColumnDefinitions>
 
-      <StackLayout Grid.Column="0" Grid.Row="0">
-        <Label Text="Altitude" HorizontalOptions="Center" />
-        <Label Text="{Binding ActuallPosition.Altitude}" HorizontalOptions="Center" />
-      </StackLayout>
-      <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="0">
-        <Label Text="Longitude" HorizontalOptions="Center" />
-        <Label Text="{Binding ActuallPosition.Longitude}" HorizontalOptions="Center" />
-      </StackLayout>
-      <StackLayout Orientation="Vertical" Grid.Column="2" Grid.Row="0">
-        <Label Text="Latitude" HorizontalOptions="Center" />
-        <Label Text="{Binding ActuallPosition.Latitude}" HorizontalOptions="Center" />
-      </StackLayout>
-      <StackLayout Orientation="Vertical" Grid.Column="0" Grid.Row="1">
+      <StackLayout Orientation="Vertical" Grid.Column="0" Grid.Row="0">
         <Label Text="Distance" HorizontalOptions="Center" />
-        <Label Text="000" HorizontalOptions="Center" />
+        <Label Text="{Binding ActivityManager.CurrentActivity.Distance, 
+               Converter={StaticResource MetersToKilometersValueConverter}, 
+               Mode=OneWay, StringFormat='{0:N} km'}" FontSize="24" HorizontalOptions="Center" />
       </StackLayout>
-      <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="1">
+      
+      <StackLayout Orientation="Vertical" Grid.Column="1" Grid.Row="0">
         <Label Text="Speed" HorizontalOptions="Center" />
-        <Label Text="{Binding ActuallPosition.Speed}" HorizontalOptions="Center" />
+        <Label Text="{Binding ActivityManager.ActualPosition.Speed, 
+               Converter={StaticResource MetersPerSecondsToKilometersPerHoursValueConverter},
+               Mode=OneWay, StringFormat='{0:N} km/h'}" FontSize="24" HorizontalOptions="Center" />
       </StackLayout>
-      <StackLayout Orientation="Vertical" Grid.Column="2" Grid.Row="1">
-        <Label Text="GPS" HorizontalOptions="Center" />
-        <Label Text="000" HorizontalOptions="Center" />
+      
+      <StackLayout Orientation="Vertical" Grid.Column="2" Grid.Row="0">
+        <Label Text="Time" HorizontalOptions="Center" />
+        <Label Text="{Binding ActivityManager.ActualTimeSpan, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" 
+                FontSize="24" HorizontalOptions="Center" />
       </StackLayout>
 
     </Grid>
@@ -57,23 +60,13 @@
                               ActualPosition="{Binding ActivityManager.ActualPosition}"
                                   />
 
-    <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="15" HorizontalOptions="Center">
-      <Button Text="StartNew activity" Command="{Binding StartActivityCommand}" BackgroundColor="Green"
+    <StackLayout Grid.Row="2" Orientation="Horizontal" Spacing="25" HorizontalOptions="Center" Margin="0, 15 , 0, 15">
+      <Button Text="Start activity" Command="{Binding StartActivityCommand}" BackgroundColor="Green"
               BorderRadius="20" />
 
-      <Button Text="StopCurrent activity" Command="{Binding EndActivityCommand}" BackgroundColor="Red"
+      <Button Text="Stop activity" Command="{Binding EndActivityCommand}" BackgroundColor="Red"
                 BorderRadius="20" />
     </StackLayout>
-
-
-    <ScrollView Grid.Row="3">
-      <ScrollView.Content>
-        <StackLayout Padding="15, 10">
-          <Label Text="Debug console: (double tap to expand)" />
-
-        </StackLayout>
-      </ScrollView.Content>
-    </ScrollView>
 
   </Grid>
 </ContentPage>

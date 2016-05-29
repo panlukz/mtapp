@@ -1,4 +1,9 @@
-﻿using FreshMvvm;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using FreshMvvm;
+using Mtapp.Models;
+using Mtapp.Services;
 using PropertyChanged;
 using Xamarin.Forms;
 
@@ -7,41 +12,32 @@ namespace Mtapp.PageModels
     [ImplementPropertyChanged]
     public class HistoryPageModel : FreshBasePageModel
     {
-        #region Commands
+        private readonly IActivityLocalDataService _activityLocalDataService;
 
-        /// <summary>
-        ///     Showing details of selected activity.
-        /// </summary>
-        public Command ShowHistoryDetails
+        public IList<Activity> Activities { get; set; }
+
+        public HistoryPageModel(IActivityLocalDataService activityLocalDataService)
         {
-            get
-            {
-                return new Command(
-                    async () => { await CoreMethods.PushPageModel<HistoryDetailsPageModel>(); }/*, ShowHistoryCanExecute*/);
-            }
+            _activityLocalDataService = activityLocalDataService;
         }
 
-        public Command ChangeCanExecuteCommand
+        protected override void ViewIsAppearing(object sender, EventArgs e)
+        {
+            Activities = _activityLocalDataService.GetAllActivities().OrderByDescending(a => a.Date).ToList();
+        }
+
+
+        public Command ShowActivityDetailsCommand
         {
             get
             {
-                return new Command(() =>
+                return new Command(async (activityId) =>
                 {
-                    Decision = true;
-                    ShowHistoryDetails.ChangeCanExecute();
-                } );
+                    await CoreMethods.PushPageModel<HistoryDetailsPageModel>(activityId);
+
+                });
             }
         }
 
-        public bool Decision { get; set; }
-
-        private bool ShowHistoryCanExecute()
-        {
-            if (!Decision) return false;
-
-            return true;
-        }
-
-        #endregion
     }
 }

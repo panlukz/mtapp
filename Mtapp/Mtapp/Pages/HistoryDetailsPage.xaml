@@ -1,6 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Mtapp.Pages.HistoryDetailsPage">
-  <Label Text="history details page" VerticalOptions="Center" HorizontalOptions="Center" />
+             xmlns:customControls="clr-namespace:Mtapp.Pages.CustomControls;assembly=Mtapp"
+             xmlns:converters="clr-namespace:Mtapp.Pages.Converters;assembly=Mtapp"
+             x:Class="Mtapp.Pages.HistoryDetailsPage"
+             Title="History details">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converters:MetersToKilometersValueConverter x:Key="MetersToKilometersValueConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="3*" />
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+    <customControls:CustomMap Grid.Row="0" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand"
+                          x:Name="ActivityDetailsMap"
+                          MapType="Street"
+                          Positions="{Binding Activity.Positions}"
+                          IsShowingUser="True"
+                           />
+
+    <StackLayout Grid.Row="1" Padding="10" VerticalOptions="FillAndExpand">
+      <Label Text="Activity name:" />
+      <Label Text="{Binding Activity.Name}" FontSize="16" />
+      <Label Text="Activity date:" />
+      <Label Text="{Binding Activity.Date, StringFormat='{}{0:dd-MM-yyyy}'}" FontSize="16" />
+      <Label Text="Activity distance:" />
+      <Label Text="{Binding Activity.Distance, Converter={StaticResource MetersToKilometersValueConverter}, 
+                   Mode=OneWay, StringFormat='{0:N} km'}" FontSize="16" />
+      <Label Text="Activity total time:" />
+      <Label Text="{Binding Activity.TotalTime, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" FontSize="16" />
+      <Label Text="Activity description:" />
+      <Label Text="{Binding Activity.Description}" VerticalOptions="FillAndExpand" FontSize="16" />
+    </StackLayout>
+
+    <StackLayout Grid.Row="2" Orientation="Vertical">
+      <Button Text="Send to server" Command="{Binding }" />
+    </StackLayout>
+
+  </Grid>
 </ContentPage>
