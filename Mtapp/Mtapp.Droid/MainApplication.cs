@@ -3,7 +3,10 @@ using System;
 using Android.App;
 using Android.OS;
 using Android.Runtime;
+using Mtapp.Helpers;
 using Plugin.CurrentActivity;
+using Xamarin.Forms;
+using Application = Android.App.Application;
 
 namespace Mtapp.Droid
 {
@@ -21,6 +24,19 @@ namespace Mtapp.Droid
             base.OnCreate();
             RegisterActivityLifecycleCallbacks(this);
             //A great place to initialize Xamarin.Insights and Dependency Services!
+
+            AndroidEnvironment.UnhandledExceptionRaiser += AndroidEnvironmentExceptionHandler;
+            AppDomain.CurrentDomain.UnhandledException += AppDomainExceptionHandler;
+        }
+
+        private void AppDomainExceptionHandler(object sender, UnhandledExceptionEventArgs e)
+        {
+            DependencyService.Get<ILogger>().Log(((Exception)e.ExceptionObject).Message, "AppDomain", LogType.Error);
+        }
+
+        private void AndroidEnvironmentExceptionHandler(object sender, RaiseThrowableEventArgs e)
+        {
+            DependencyService.Get<ILogger>().Log(e.Exception.Message, "AndroidEnviroment", LogType.Error);
         }
 
         public override void OnTerminate()
