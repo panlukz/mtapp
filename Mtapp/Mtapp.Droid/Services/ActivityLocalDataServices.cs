@@ -57,7 +57,8 @@ namespace Mtapp.Droid.Services
                 }
                 catch (Exception ex)
                 {
-                    //TODO :)
+                    //TODO log here
+                    throw ex;
                 }
 
 

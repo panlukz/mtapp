@@ -46,7 +46,7 @@
       
       <StackLayout Orientation="Vertical" Grid.Column="2" Grid.Row="0">
         <Label Text="Time" HorizontalOptions="Center" />
-        <Label Text="{Binding ActivityManager.ActualTimeSpan, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" 
+        <Label Text="{Binding ActivityManager.CurrentActivity.Time, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" 
                 FontSize="24" HorizontalOptions="Center" />
       </StackLayout>
 

@@ -46,6 +46,12 @@ namespace Mtapp.Helpers
             set { AppSettings.AddOrUpdateValue(GpsDesiredAccuracyKey, value); }
         }
 
+        public static string ApiToken
+        {
+            get { return AppSettings.GetValueOrDefault(ApiTokenKey, ApiTokenDefault); }
+            set { AppSettings.AddOrUpdateValue(ApiTokenKey, value); }
+        }
+
         #region Setting Constants
 
         private const string GpsMinDistanceKey = "gps_min_distance_key";
@@ -62,6 +68,9 @@ namespace Mtapp.Helpers
 
         private const string GpsDesiredAccuracyKey = "min_accuracy_key";
         private static readonly int GpsDesiredAccuracyDefault = 10;
+
+        private const string ApiTokenKey = "api_token_key";
+        private static readonly string ApiTokenDefault = string.Empty;
 
         #endregion
     }

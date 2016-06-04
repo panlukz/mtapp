@@ -34,7 +34,7 @@
               
               <StackLayout HorizontalOptions="CenterAndExpand" Margin="20">
                 <Label Text="Time:" HorizontalOptions="CenterAndExpand" />
-                <Label Text="{Binding Activity.TotalTime, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" 
+                <Label Text="{Binding Activity.Time, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" 
                        HorizontalOptions="CenterAndExpand" FontSize="20" />
               </StackLayout>
               

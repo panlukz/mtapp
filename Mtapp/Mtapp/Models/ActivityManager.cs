@@ -34,17 +34,11 @@ namespace Mtapp.Models
                 _geolocatorService.DesiredAccuracy = Settings.GpsDesiredAccuracy;
                 await _geolocatorService.StartListeningAsync(Settings.GpsMinTime, Settings.GpsMinDistance);
 
-                ActualTimeSpan = TimeSpan.Zero;
-
                 Device.StartTimer(TimeSpan.FromSeconds(1), () =>
                 {
-                    if(CurrentActivity.Positions.Count > 0)
-                        ActualTimeSpan += TimeSpan.FromSeconds(1);
+                    CurrentActivity.Time += TimeSpan.FromSeconds(1);
 
-                    if (CurrentActivity.Status == ActivityStatus.Started)
-                        return true;
-
-                    return false;
+                    return CurrentActivity.Status == ActivityStatus.Started;
                 });
 
                 CurrentActivity.Status = ActivityStatus.Started;
@@ -111,7 +105,7 @@ namespace Mtapp.Models
         /// </summary>
         public ActivityPosition ActualPosition { get; set; }
 
-        public TimeSpan ActualTimeSpan { get; set; }
+        //public TimeSpan ActualTimeSpan { get; set; }
 
         #endregion
     }

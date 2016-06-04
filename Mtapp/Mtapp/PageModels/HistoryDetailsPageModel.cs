@@ -16,10 +16,12 @@ namespace Mtapp.PageModels
     public class HistoryDetailsPageModel : FreshBasePageModel
     {
         private readonly IActivityLocalDataService _activityLocalDataService;
+        private readonly IActivityDataService _activityDataService;
 
-        public HistoryDetailsPageModel(IActivityLocalDataService activityLocalDataService)
+        public HistoryDetailsPageModel(IActivityLocalDataService activityLocalDataService, IActivityDataService activityDataService)
         {
             _activityLocalDataService = activityLocalDataService;
+            _activityDataService = activityDataService;
         }
 
         private Activity _activity;
@@ -36,6 +38,27 @@ namespace Mtapp.PageModels
             base.ViewIsAppearing(sender, e);
 
             Activity = _activity;
+        }
+
+        public Command SendActivityToServerCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (Activity != null)
+                    {
+                        try
+                        {
+                            await _activityDataService.Add(Activity);
+                        }
+                        catch (Exception ex)
+                        {
+                            await CoreMethods.DisplayAlert("Error", ex.Message, "Ok");
+                        }
+                    }
+                });
+            }
         }
     }
 }

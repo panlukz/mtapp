@@ -50,6 +50,8 @@ namespace Mtapp
             FreshIOC.Container.Register<IActivityLocalDataService>(activityLocalDs);
 
             FreshIOC.Container.Register<IActivityManager, ActivityManager>(); // Singleton 
+            FreshIOC.Container.Register<IActivityDataService, ActivityDataService>(); // Singleton 
+
 
         }
 

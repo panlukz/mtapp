@@ -72,6 +72,8 @@
       <DependentUpon>SettingsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\ActivityDataService.cs" />
+    <Compile Include="Services\IActivityDataService.cs" />
     <Compile Include="Services\IActivityLocalDataService.cs" />
   </ItemGroup>
   <ItemGroup>

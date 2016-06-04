@@ -36,8 +36,9 @@
           </StackLayout>
         </ViewCell>
       </TableSection>
-      <TableSection Title="Api endpoints urls">
-        <EntryCell Label="Activity:" Text="{Binding ActivityRestUri}" />
+      <TableSection Title="Api settings">
+        <EntryCell Label="Activity rest uri:" Text="{Binding ActivityRestUri}" />
+        <EntryCell Label="Api token:" Text="{Binding ApiToken}" />
       </TableSection>
     </TableRoot>
   </TableView>

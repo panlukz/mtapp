@@ -15,6 +15,8 @@ namespace Mtapp.Models
         public Activity()
         {
             Positions = new List<ActivityPosition>();
+            Time = TimeSpan.Zero;
+            Date = DateTime.UtcNow;
         }
 
         [JsonProperty("id")]
@@ -23,36 +25,19 @@ namespace Mtapp.Models
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        public DateTime Date
-        {
-            get
-            {
-                if (Positions.Count > 0)
-                    return Positions[0].Timestamp;
-                else
-                    //TODO for tests
-                    return new DateTime();
-            }
-        }
-
-        public TimeSpan TotalTime
-        {
-            get
-            {
-                if (Positions.Count > 0)
-                    return (Positions.Last().Timestamp - Positions.First().Timestamp);
-
-                return TimeSpan.Zero;
-            }
-        }
-
-        [JsonProperty("desc")]
+        [JsonProperty("description")]
         public string Description { get; set; }
 
         [JsonProperty("distance")]
         public double Distance { get; set; }
 
-        [JsonProperty("latlngs")]
+        [JsonProperty("duration")]
+        public TimeSpan Time { get; set; }
+
+        [JsonProperty("date")]
+        public DateTime Date { get; set; }
+
+        [JsonProperty("coordinates")]
         public IList<ActivityPosition> Positions { get; set; }
 
         public ActivityStatus Status { get; set; }

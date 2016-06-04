@@ -25,5 +25,7 @@ namespace Mtapp.PageModels
 
         public string ActivityRestUri { get { return Settings.ActivityRestUri; } set { Settings.ActivityRestUri = value; } }
 
+        public string ApiToken { get { return Settings.ApiToken; } set { Settings.ApiToken = value; } }
+ 
     }
 }

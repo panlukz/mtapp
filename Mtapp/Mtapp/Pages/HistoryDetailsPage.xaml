@@ -32,13 +32,13 @@
       <Label Text="{Binding Activity.Distance, Converter={StaticResource MetersToKilometersValueConverter}, 
                    Mode=OneWay, StringFormat='{0:N} km'}" FontSize="16" />
       <Label Text="Activity total time:" />
-      <Label Text="{Binding Activity.TotalTime, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" FontSize="16" />
+      <Label Text="{Binding Activity.Time, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" FontSize="16" />
       <Label Text="Activity description:" />
       <Label Text="{Binding Activity.Description}" VerticalOptions="FillAndExpand" FontSize="16" />
     </StackLayout>
 
     <StackLayout Grid.Row="2" Orientation="Vertical">
-      <Button Text="Send to server" Command="{Binding }" />
+      <Button Text="Send to server" Command="{Binding SendActivityToServerCommand}" />
     </StackLayout>
 
   </Grid>
