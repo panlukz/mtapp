@@ -2,6 +2,7 @@
 
 using Android.App;
 using Android.Content.PM;
+using Android.Graphics.Drawables;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -19,8 +20,7 @@ namespace Mtapp.Droid
             global::Xamarin.Forms.Forms.Init(this, bundle);
             Xamarin.FormsMaps.Init(this, bundle);
 
-            ActionBar.SetIcon(Android.Graphics.Color.Transparent);
-            
+            ActionBar.SetIcon(new ColorDrawable(Android.Graphics.Color.Transparent));
 
             LoadApplication(new App());
         }
