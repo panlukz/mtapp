@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using FreshMvvm;
 using FreshTinyIoC;
+using Mtapp.Data;
 using Mtapp.Helpers;
 using Mtapp.Models;
 using Mtapp.PageModels;
@@ -45,12 +46,21 @@ namespace Mtapp
             geolocator.AllowsBackgroundUpdates = true;
             FreshIOC.Container.Register<IGeolocator>(geolocator);
 
+            var deviceMethods = DependencyService.Get<IDeviceMethods>();
+            FreshIOC.Container.Register<IDeviceMethods>(deviceMethods);
+
+            //var sqlite = DependencyService.Get<ISQLite>();
+            //FreshIOC.Container.Register<ISQLite>(sqlite);
+
             //Setup activity local data service
             var activityLocalDs = DependencyService.Get<IActivityLocalDataService>();
             FreshIOC.Container.Register<IActivityLocalDataService>(activityLocalDs);
 
             FreshIOC.Container.Register<IActivityManager, ActivityManager>(); // Singleton 
             FreshIOC.Container.Register<IActivityDataService, ActivityDataService>(); // Singleton 
+            //FreshIOC.Container.Register<IActivityRepository, ActivityRepository>();//singleton
+
+
 
 
         }

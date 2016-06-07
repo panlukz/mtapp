@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using FreshMvvm;
+using Mtapp.Data;
 using Mtapp.Models;
 using Plugin.Geolocator;
 using PropertyChanged;
@@ -11,10 +12,12 @@ namespace Mtapp.PageModels
     [ImplementPropertyChanged]
     public class ActivityPageModel : FreshBasePageModel
     {
+        private readonly IActivityRepository _activityRepository;
         //TODO for tests only!!!
 
-        public ActivityPageModel(IActivityManager activityManager)
+        public ActivityPageModel(IActivityManager activityManager)//, IActivityRepository activityRepository)
         {
+            //_activityRepository = activityRepository;
             ActivityManager = activityManager;
         }
 
@@ -61,8 +64,9 @@ namespace Mtapp.PageModels
                         if (decision)
                         {
                             await ActivityManager.StopActivityAsync();
-                            await CoreMethods.PushPageModel<ActivityDetailsPageModel>(ActivityManager.CurrentActivity);
                             IsActivityStarted = false;
+                            //var bol = _activityRepository.SaveActivity(ActivityManager.CurrentActivity);
+                            await CoreMethods.PushPageModel<ActivityDetailsPageModel>(ActivityManager.CurrentActivity);
                         }
                     },
                     () => IsActivityStarted );

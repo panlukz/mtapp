@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mtapp.Helpers
+namespace Mtapp.Data
 {
-    public interface IDeviceMethods
+    interface IDbObject
     {
-        void FinishApp();
-
-        string GetDataPath();
+        string Id { get; set; }
     }
 }

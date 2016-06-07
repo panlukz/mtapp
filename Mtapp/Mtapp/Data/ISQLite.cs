@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SQLite.Net;
 
-namespace Mtapp.Helpers
+namespace Mtapp.Data
 {
-    public interface IDeviceMethods
+    public interface ISQLite
     {
-        void FinishApp();
-
-        string GetDataPath();
+        SQLiteConnection GetConnection();
     }
 }
