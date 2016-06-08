@@ -52,6 +52,12 @@ namespace Mtapp.Helpers
             set { AppSettings.AddOrUpdateValue(ApiTokenKey, value); }
         }
 
+        public static string AuthApiEndpoint
+        {
+            get { return AppSettings.GetValueOrDefault(AuthApiEndpointKey, AuthApiEndpointDefault); }
+            set { AppSettings.AddOrUpdateValue(AuthApiEndpointKey, value); }
+        }
+
         #region Setting Constants
 
         private const string GpsMinDistanceKey = "gps_min_distance_key";
@@ -64,13 +70,16 @@ namespace Mtapp.Helpers
         private static readonly int GpsMinAccuracyDefault = 10;
 
         private const string ActivityRestUriKey = "activity_resturi_key";
-        private static readonly string ActivityRestUriDefault = "http://192.168.1.2:58938/api/activity";
+        private static readonly string ActivityRestUriDefault = "https://104.40.177.83/api/v1/activity/";
 
         private const string GpsDesiredAccuracyKey = "min_accuracy_key";
         private static readonly int GpsDesiredAccuracyDefault = 10;
 
         private const string ApiTokenKey = "api_token_key";
         private static readonly string ApiTokenDefault = string.Empty;
+
+        private const string AuthApiEndpointKey = "api_auth_key";
+        private static readonly string AuthApiEndpointDefault = "https://104.40.177.83/api/v1/api-token-auth/";
 
         #endregion
     }

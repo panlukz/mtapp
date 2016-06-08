@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreshMvvm;
+using Mtapp.Helpers;
 using Xamarin.Forms;
 
 namespace Mtapp.Pages.Containers
@@ -12,6 +13,15 @@ namespace Mtapp.Pages.Containers
     public class CustomMasterDetailNavigationContainer : FreshMasterDetailNavigationContainer
     {
         private ContentPage _menuPage;
+
+        public CustomMasterDetailNavigationContainer()
+        {
+            
+        }
+        public CustomMasterDetailNavigationContainer(string navigationName) : base(navigationName)
+        {
+            
+        }
 
         protected override void CreateMenuPage(string menuPageTitle, string menuIcon = null)
         {
@@ -25,6 +35,7 @@ namespace Mtapp.Pages.Containers
                     this.Detail = Pages[(string)args.SelectedItem];
                 this.IsPresented = false;
             });
+
             this._menuPage.Content = (View)listView;
             NavigationPage navigationPage1 = new NavigationPage((Page)this._menuPage);
             navigationPage1.Title = "Menu";

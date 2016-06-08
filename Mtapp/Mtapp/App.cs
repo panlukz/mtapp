@@ -25,13 +25,20 @@ namespace Mtapp
 
         private void SetupNavigation()
         {
-            var masterDetailNav = new CustomMasterDetailNavigationContainer();
-            masterDetailNav.Init("Menu", "hamburger.png");
-            masterDetailNav.AddPage<MainPageModel>("Dashboard");
-            masterDetailNav.AddPage<ActivityPageModel>("Activity");
-            masterDetailNav.AddPage<HistoryPageModel>("History");
-            masterDetailNav.AddPage<SettingsPageModel>("Settings");
-            MainPage = masterDetailNav;
+            var mainNavigation = new CustomMasterDetailNavigationContainer(NavigationContainerNames.MainContainer);
+            mainNavigation.Init("Menu", "hamburger.png");
+            mainNavigation.AddPage<MainPageModel>("Dashboard");
+            mainNavigation.AddPage<ActivityPageModel>("Activity");
+            mainNavigation.AddPage<HistoryPageModel>("History");
+            mainNavigation.AddPage<SettingsPageModel>("Settings");
+
+            var loginPage = FreshPageModelResolver.ResolvePageModel<LoginPageModel>();
+            var loginContainer = new FreshNavigationContainer(loginPage, NavigationContainerNames.AuthenticationContainer);
+
+            if (string.IsNullOrWhiteSpace(Settings.ApiToken))
+                MainPage = loginContainer;
+            else
+                MainPage = mainNavigation;
         }
 
         private void SetupIoc()
@@ -51,8 +58,16 @@ namespace Mtapp
 
             FreshIOC.Container.Register<IActivityManager, ActivityManager>(); // Singleton 
             FreshIOC.Container.Register<IActivityDataService, ActivityDataService>(); // Singleton 
+            FreshIOC.Container.Register<IAuthService, AuthService>(); // Singleton 
 
 
+
+        }
+
+        public class NavigationContainerNames
+        {
+            public const string AuthenticationContainer = "AuthenticationContainer";
+            public const string MainContainer = "MainContainer";
         }
 
         protected override void OnStart()

@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Net;
 using Android.App;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
@@ -15,6 +15,8 @@ namespace Mtapp.Droid
     {
         protected override void OnCreate(Bundle bundle)
         {
+            ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
+
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);

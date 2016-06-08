@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Mtapp.Pages.LoginPage">
+  <StackLayout Padding="50, 0" VerticalOptions="Center">
+    <Label Text="Please, log in" VerticalOptions="Center" HorizontalOptions="Center" />
+    <Entry Text="{Binding UserAuth.Name}" Placeholder="Login" PlaceholderColor="Silver" />
+    <Entry Text="{Binding UserAuth.Password}" Placeholder="Password" PlaceholderColor="Silver" IsPassword="True" />
+    <Button Text="Log in" Command="{Binding LoginCommand}"></Button>
+  </StackLayout>
+</ContentPage>

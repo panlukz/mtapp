@@ -37,8 +37,13 @@
         </ViewCell>
       </TableSection>
       <TableSection Title="Api settings">
-        <EntryCell Label="Activity rest uri:" Text="{Binding ActivityRestUri}" />
-        <EntryCell Label="Api token:" Text="{Binding ApiToken}" />
+        <EntryCell Label="Activity endpoint:" Text="{Binding ActivityRestUri}" />
+        <EntryCell Label="Auth endpoint:" Text="{Binding AuthApiEndpoint}" />
+      </TableSection>
+      <TableSection Title="User settings">
+        <ViewCell>
+          <Button Text="Logout" Command="{Binding LogoutCommand}" />
+        </ViewCell>
       </TableSection>
     </TableRoot>
   </TableView>
