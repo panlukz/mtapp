@@ -57,6 +57,9 @@ namespace Mtapp.PageModels
                     if (string.IsNullOrWhiteSpace(Activity.Name))
                         Activity.Name = string.Format("Fajna wycieczka {0}", DateTime.Now);
 
+                    if (string.IsNullOrWhiteSpace(Activity.Description))
+                        Activity.Description = string.Empty;
+
                     _activityLocalDataService.SaveActivity(Activity);
                     await CoreMethods.PopPageModel();
                 });
