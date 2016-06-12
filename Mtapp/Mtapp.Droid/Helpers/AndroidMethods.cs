@@ -20,5 +20,10 @@ namespace Mtapp.Droid.Helpers
         public void FinishApp()
         {
         }
+
+        public string GetDataPath()
+        {
+            return System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal);
+        }
     }
 }

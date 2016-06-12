@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PropertyChanged;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace Mtapp.Models
 {
@@ -19,6 +21,7 @@ namespace Mtapp.Models
             Date = DateTime.UtcNow;
         }
 
+        [PrimaryKey]
         [JsonProperty("id")]
         public string Id { get; set; }
 
@@ -37,8 +40,9 @@ namespace Mtapp.Models
         [JsonProperty("date")]
         public DateTime Date { get; set; }
 
+        [OneToMany(CascadeOperations = CascadeOperation.All)]
         [JsonProperty("coordinates")]
-        public IList<ActivityPosition> Positions { get; set; }
+        public List<ActivityPosition> Positions { get; set; }
 
         public ActivityStatus Status { get; set; }
     }

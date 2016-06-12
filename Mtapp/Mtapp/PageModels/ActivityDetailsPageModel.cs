@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreshMvvm;
+using Mtapp.Data;
 using Mtapp.Models;
 using Mtapp.Services;
 using PropertyChanged;
@@ -15,11 +16,13 @@ namespace Mtapp.PageModels
     public class ActivityDetailsPageModel : FreshBasePageModel
     {
         private readonly IActivityLocalDataService _activityLocalDataService;
+        private readonly IActivityRepository _activityRepository;
         private Activity _activity;
 
-        public ActivityDetailsPageModel(IActivityLocalDataService activityLocalDataService)
+        public ActivityDetailsPageModel(IActivityLocalDataService activityLocalDataService, IActivityRepository activityRepository)
         {
             _activityLocalDataService = activityLocalDataService;
+            _activityRepository = activityRepository;
         }
 
         #region Properties
@@ -61,6 +64,7 @@ namespace Mtapp.PageModels
                         Activity.Description = string.Empty;
 
                     _activityLocalDataService.SaveActivity(Activity);
+                    var result = _activityRepository.SaveActivity(Activity);
                     await CoreMethods.PopPageModel();
                 });
             }

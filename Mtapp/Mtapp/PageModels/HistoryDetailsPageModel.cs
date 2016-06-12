@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreshMvvm;
+using Mtapp.Data;
 using Mtapp.Models;
 using Mtapp.Services;
 using PropertyChanged;
@@ -15,13 +16,13 @@ namespace Mtapp.PageModels
     [ImplementPropertyChanged]
     public class HistoryDetailsPageModel : FreshBasePageModel
     {
-        private readonly IActivityLocalDataService _activityLocalDataService;
         private readonly IActivityDataService _activityDataService;
+        private readonly IActivityRepository _activityRepository;
 
-        public HistoryDetailsPageModel(IActivityLocalDataService activityLocalDataService, IActivityDataService activityDataService)
+        public HistoryDetailsPageModel(IActivityDataService activityDataService, IActivityRepository activityRepository)
         {
-            _activityLocalDataService = activityLocalDataService;
             _activityDataService = activityDataService;
+            _activityRepository = activityRepository;
         }
 
         private Activity _activity;
