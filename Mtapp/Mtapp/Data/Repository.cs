@@ -19,8 +19,6 @@ namespace Mtapp.Data
         protected Repository(ISQLite sqLite)
         { 
             Connection = sqLite.GetConnection();
-
-            Connection.CreateTable<Activity>();
         }
 
     }

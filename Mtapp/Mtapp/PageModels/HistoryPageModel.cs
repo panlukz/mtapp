@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using FreshMvvm;
+using Mtapp.Data;
 using Mtapp.Models;
 using Mtapp.Services;
 using PropertyChanged;
@@ -13,17 +14,19 @@ namespace Mtapp.PageModels
     public class HistoryPageModel : FreshBasePageModel
     {
         private readonly IActivityLocalDataService _activityLocalDataService;
+        private readonly IActivityRepository _activityRepository;
 
         public IList<Activity> Activities { get; set; }
 
-        public HistoryPageModel(IActivityLocalDataService activityLocalDataService)
+        public HistoryPageModel(IActivityRepository activityRepository)
         {
-            _activityLocalDataService = activityLocalDataService;
+            _activityRepository = activityRepository;
         }
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
-            Activities = _activityLocalDataService.GetAllActivities().OrderByDescending(a => a.Date).ToList();
+            //Activities = _activityLocalDataService.GetAllActivities().OrderByDescending(a => a.Date).ToList();
+            Activities = _activityRepository.GetAllActivities().ToList();
         }
 
 
@@ -31,9 +34,9 @@ namespace Mtapp.PageModels
         {
             get
             {
-                return new Command(async (activityId) =>
+                return new Command(async (activity) =>
                 {
-                    await CoreMethods.PushPageModel<HistoryDetailsPageModel>(activityId);
+                    await CoreMethods.PushPageModel<HistoryDetailsPageModel>(activity);
 
                 });
             }

@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using PropertyChanged;
+using SQLite.Net.Attributes;
+using SQLiteNetExtensions.Attributes;
 
 namespace Mtapp.Models
 {
@@ -12,6 +14,9 @@ namespace Mtapp.Models
     [JsonObject(MemberSerialization.OptIn)]
     public class ActivityPosition
     {
+        [PrimaryKey, AutoIncrement]
+        public int Id { get; set; }
+
         [JsonProperty("lng")]
         public double Longitude { get; set; }
 
@@ -26,5 +31,11 @@ namespace Mtapp.Models
 
         [JsonProperty("timestamp")]
         public DateTime Timestamp { get; set; }
+
+        [ForeignKey(typeof(Activity))]
+        public string ActivityId { get; set; }
+        
+        [ManyToOne]
+        public Activity Activity { get; set; }
     }
 }

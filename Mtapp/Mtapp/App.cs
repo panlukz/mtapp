@@ -49,8 +49,8 @@ namespace Mtapp
             var deviceMethods = DependencyService.Get<IDeviceMethods>();
             FreshIOC.Container.Register<IDeviceMethods>(deviceMethods);
 
-            //var sqlite = DependencyService.Get<ISQLite>();
-            //FreshIOC.Container.Register<ISQLite>(sqlite);
+            var sqlite = DependencyService.Get<ISQLite>();
+            FreshIOC.Container.Register<ISQLite>(sqlite);
 
             //Setup activity local data service
             var activityLocalDs = DependencyService.Get<IActivityLocalDataService>();
@@ -58,7 +58,7 @@ namespace Mtapp
 
             FreshIOC.Container.Register<IActivityManager, ActivityManager>(); // Singleton 
             FreshIOC.Container.Register<IActivityDataService, ActivityDataService>(); // Singleton 
-            //FreshIOC.Container.Register<IActivityRepository, ActivityRepository>();//singleton
+            FreshIOC.Container.Register<IActivityRepository, ActivityRepository>();//singleton
 
 
 

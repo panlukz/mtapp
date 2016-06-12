@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Mtapp.Helpers;
 using Mtapp.Models;
 using SQLite;
+using SQLiteNetExtensions.Extensions;
 
 namespace Mtapp.Data
 {
@@ -13,11 +14,13 @@ namespace Mtapp.Data
     {
         public ActivityRepository(ISQLite sqlite) : base(sqlite)
         {
+            Connection.CreateTable<Activity>();
+            Connection.CreateTable<ActivityPosition>();
         }
 
         public IEnumerable<Activity> GetAllActivities()
         {
-            return Connection.Table<Activity>().ToList();
+            return Connection.GetAllWithChildren<Activity>(activity => true);
         }
 
         public Activity GetActivityById(string activityId)
@@ -28,11 +31,12 @@ namespace Mtapp.Data
         public bool SaveActivity(Activity activity)
         {
             int result = 0;
-            if (Connection.Table<Activity>().First(a => a.Id.Equals(activity.Id)) != null)
-                result = Connection.Update(activity);
+            if (Connection.Table<Activity>().FirstOrDefault(a => a.Id.Equals(activity.Id)) != null)
+                Connection.UpdateWithChildren(activity);
             else
-                result = Connection.Insert(activity);
+                Connection.InsertWithChildren(activity);
 
+            //TODO consider about this returns!
             return result != 0;
         }
 
