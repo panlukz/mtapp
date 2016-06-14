@@ -37,8 +37,9 @@
       <Label Text="{Binding Activity.Description}" VerticalOptions="FillAndExpand" FontSize="16" />
     </StackLayout>
 
-    <StackLayout Grid.Row="2" Orientation="Vertical">
+    <StackLayout Grid.Row="2" Orientation="Horizontal">
       <Button Text="Send to server" Command="{Binding SendActivityToServerCommand}" />
+      <Button Text="Delete activity" Command="{Binding DeleteActivityCommand}" />
     </StackLayout>
 
   </Grid>

@@ -25,8 +25,7 @@ namespace Mtapp.PageModels
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
-            //Activities = _activityLocalDataService.GetAllActivities().OrderByDescending(a => a.Date).ToList();
-            Activities = _activityRepository.GetAllActivities().ToList();
+            Activities = _activityRepository.GetAllActivities().OrderByDescending(a => a.Date).ToList();
         }
 
 
@@ -36,8 +35,8 @@ namespace Mtapp.PageModels
             {
                 return new Command(async (activity) =>
                 {
-                    await CoreMethods.PushPageModel<HistoryDetailsPageModel>(activity);
-
+                    var activityId = ((Activity) activity).Id;
+                    await CoreMethods.PushPageModel<HistoryDetailsPageModel>(activityId);
                 });
             }
         }

@@ -20,12 +20,12 @@ namespace Mtapp.Data
 
         public IEnumerable<Activity> GetAllActivities()
         {
-            return Connection.GetAllWithChildren<Activity>(activity => true);
+            return Connection.Table<Activity>();
         }
 
         public Activity GetActivityById(string activityId)
         {
-            return Connection.Table<Activity>().FirstOrDefault(a => a.Id.Equals(activityId));
+            return Connection.GetWithChildren<Activity>(activityId);
         }
 
         public bool SaveActivity(Activity activity)
@@ -57,7 +57,7 @@ namespace Mtapp.Data
             int result = 0;
             var activityToDelete = Connection.Table<Activity>().FirstOrDefault(a => a.Id.Equals(id));
             if (activityToDelete != null)
-                result = Connection.Delete<Activity>(activityToDelete);
+                result = Connection.Delete<Activity>(id);
 
             return result != 0;
         }
@@ -65,7 +65,7 @@ namespace Mtapp.Data
         public bool DeleteActivity(Activity activity)
         {
             int result = 0;
-            result = Connection.Delete<Activity>(activity);
+            result = Connection.Delete<Activity>(activity.Id);
 
             return result != 0;
         }

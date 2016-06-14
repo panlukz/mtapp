@@ -28,10 +28,10 @@ namespace Mtapp.PageModels
         private Activity _activity;
         public Activity Activity { get; set; }
 
-        public override void Init(object activity)
+        public override void Init(object activityId)
         {
-            base.Init(activity);
-            _activity = (Activity) activity;
+            base.Init(activityId);
+            _activity = _activityRepository.GetActivityById((string)activityId);
         }
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
@@ -56,6 +56,25 @@ namespace Mtapp.PageModels
                         catch (Exception ex)
                         {
                             await CoreMethods.DisplayAlert("Error", ex.Message, "Ok");
+                        }
+                    }
+                });
+            }
+        }
+
+        public Command DeleteActivityCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    if (Activity != null)
+                    {
+                        var decision = await CoreMethods.DisplayAlert("Are you sure?", "Delete activity?", "Yes", "No");
+                        if (decision)
+                        {
+                            _activityRepository.DeleteActivity(Activity);
+                            await CoreMethods.PopPageModel();
                         }
                     }
                 });
