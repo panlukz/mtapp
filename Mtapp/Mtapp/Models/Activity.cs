@@ -34,6 +34,9 @@ namespace Mtapp.Models
         [JsonProperty("distance")]
         public double Distance { get; set; }
 
+        [JsonProperty("average_speed")]
+        public double AverageSpeed { get; set; }
+
         [JsonProperty("duration")]
         public TimeSpan Time { get; set; }
 

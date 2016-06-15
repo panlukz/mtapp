@@ -86,6 +86,8 @@ namespace Mtapp.Models
                     var lastPosition = CurrentActivity.Positions.Last();
                     CurrentActivity.Distance += GpsHelper.CalculateDistanceBetweenPoints(lastPosition.Latitude,
                         lastPosition.Longitude, newPosition.Latitude, newPosition.Longitude);
+                    CurrentActivity.AverageSpeed = CurrentActivity.Positions.Sum(p => p.Speed) /
+                                                   CurrentActivity.Positions.Count;
                 }
 
                 CurrentActivity.Positions.Add(newPosition);

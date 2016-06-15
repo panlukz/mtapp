@@ -39,7 +39,8 @@
 
     <StackLayout Grid.Row="2" Orientation="Horizontal">
       <Button Text="Send to server" Command="{Binding SendActivityToServerCommand}" />
-      <Button Text="Delete activity" Command="{Binding DeleteActivityCommand}" />
+      <Button Text="Edit" Command="{Binding EditActivityInfoCommand}" />
+      <Button Text="Delete" Command="{Binding DeleteActivityCommand}" />
     </StackLayout>
 
   </Grid>

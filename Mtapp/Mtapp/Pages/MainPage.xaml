@@ -1,8 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Mtapp.Pages.Converters;assembly=Mtapp"
              x:Class="Mtapp.Pages.MainPage"
              Title="Dashboard">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converters:MetersToKilometersValueConverter x:Key="MetersToKilometersValueConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
   <ScrollView>
       
       <Grid>
@@ -18,22 +24,24 @@
 
         <StackLayout Grid.Column="0" Grid.Row="0" Padding="10, 15">
           <Label Text="Total activities:" FontSize="18" TextColor="Black" />
-          <Label Text="0" FontSize="50" HorizontalOptions="Center" TextColor="Black" />
+          <Label Text="{Binding TotalActivities}" FontSize="50" HorizontalOptions="Center" TextColor="Black" />
         </StackLayout>
 
         <StackLayout Grid.Column="0" Grid.Row="1" Padding="10, 15">
           <Label Text="Total distance:" FontSize="18" TextColor="Black" />
-          <Label Text="0" FontSize="50" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TotalDistance, 
+               Converter={StaticResource MetersToKilometersValueConverter}, 
+               Mode=OneWay, StringFormat='{0:N} km'}}" FontSize="50" HorizontalOptions="Center"></Label>
         </StackLayout>
 
         <StackLayout Grid.Column="0" Grid.Row="2" Padding="10, 15">
           <Label Text="Total time:" FontSize="18" TextColor="Black" />
-          <Label Text="0" FontSize="50" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TotalTime, StringFormat='{}{0:hh}:{0:mm}:{0:ss}'}" FontSize="50" HorizontalOptions="Center"></Label>
         </StackLayout>
 
         <StackLayout Grid.Column="0" Grid.Row="3" Padding="10, 15">
           <Label Text="Average speed:" FontSize="18" TextColor="Black" />
-          <Label Text="0" FontSize="50" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding AverageSpeed}" FontSize="50" HorizontalOptions="Center"></Label>
         </StackLayout>
 
       </Grid>

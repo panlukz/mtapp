@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FreshMvvm;
+using FreshTinyIoC;
 using Mtapp.Data;
 using Mtapp.Models;
 using Mtapp.Services;
@@ -25,20 +26,20 @@ namespace Mtapp.PageModels
             _activityRepository = activityRepository;
         }
 
-        private Activity _activity;
+        private string _activityId;
         public Activity Activity { get; set; }
 
         public override void Init(object activityId)
         {
             base.Init(activityId);
-            _activity = _activityRepository.GetActivityById((string)activityId);
+            _activityId = ((string)activityId);
         }
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
 
-            Activity = _activity;
+            Activity = _activityRepository.GetActivityById(_activityId);
         }
 
         public Command SendActivityToServerCommand
@@ -80,5 +81,18 @@ namespace Mtapp.PageModels
                 });
             }
         }
+
+        public Command EditActivityInfoCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                {
+                    await CoreMethods.PushPageModel<EditActivityInfoPageModel>(Activity.Id);
+                });
+            }
+        }
+
+
     }
 }
