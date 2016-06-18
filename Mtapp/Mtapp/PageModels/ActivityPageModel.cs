@@ -12,8 +12,7 @@ namespace Mtapp.PageModels
     [ImplementPropertyChanged]
     public class ActivityPageModel : FreshBasePageModel
     {
-        private readonly IActivityRepository _activityRepository;
-        //TODO for tests only!!!
+        
 
         public ActivityPageModel(IActivityManager activityManager)//, IActivityRepository activityRepository)
         {

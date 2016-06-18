@@ -39,7 +39,7 @@ namespace Mtapp.PageModels
         {
             base.ViewIsAppearing(sender, e);
 
-            Activity = _activityRepository.GetActivityById(_activityId);
+            Activity = _activityRepository.GetById(_activityId);
         }
 
         public Command SendActivityToServerCommand
@@ -74,7 +74,7 @@ namespace Mtapp.PageModels
                         var decision = await CoreMethods.DisplayAlert("Are you sure?", "Delete activity?", "Yes", "No");
                         if (decision)
                         {
-                            _activityRepository.DeleteActivity(Activity);
+                            _activityRepository.Delete(Activity);
                             await CoreMethods.PopPageModel();
                         }
                     }

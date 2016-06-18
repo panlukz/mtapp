@@ -27,14 +27,14 @@ namespace Mtapp.PageModels
         public MainPageModel(IActivityRepository activityRepository)
         {
             _activityRepository = activityRepository;
-            _allActivities = _activityRepository.GetAllActivities();
+            _allActivities = _activityRepository.GetAll();
         }
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
             base.ViewIsAppearing(sender, e);
 
-            _allActivities = _activityRepository.GetAllActivities();
+            _allActivities = _activityRepository.GetAll();
 
             //TODO i don't like this :(
             RaisePropertyChanged("TotalActivities");

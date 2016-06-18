@@ -11,15 +11,18 @@ using SQLite.Net;
 
 namespace Mtapp.Data
 {
-    abstract class Repository
+    public interface IRepository<T>
     {
+        IEnumerable<T> GetAll();
 
-        protected SQLiteConnection Connection;
+        T GetById(string id);
 
-        protected Repository(ISQLite sqLite)
-        { 
-            Connection = sqLite.GetConnection();
-        }
+        bool Save(T item);
 
+        void SaveAll(IEnumerable<T> items);
+
+        bool Delete(string id);
+
+        bool Delete(T item);
     }
 }

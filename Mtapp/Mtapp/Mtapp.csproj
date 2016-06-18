@@ -38,7 +38,7 @@
     <Compile Include="App.cs" />
     <Compile Include="Data\ActivityRepository.cs" />
     <Compile Include="Data\ISQLite.cs" />
-    <Compile Include="Data\Repository.cs" />
+    <Compile Include="Data\IRepository.cs" />
     <Compile Include="Data\IDbObject.cs" />
     <Compile Include="Data\IActivityRepository.cs" />
     <Compile Include="Helpers\GpsHelper.cs" />

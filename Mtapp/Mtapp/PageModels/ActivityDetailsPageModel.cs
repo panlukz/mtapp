@@ -64,7 +64,7 @@ namespace Mtapp.PageModels
                         Activity.Description = string.Empty;
 
                     _activityLocalDataService.SaveActivity(Activity);
-                    var result = _activityRepository.SaveActivity(Activity);
+                    var result = _activityRepository.Save(Activity);
                     await CoreMethods.PopPageModel();
                 });
             }

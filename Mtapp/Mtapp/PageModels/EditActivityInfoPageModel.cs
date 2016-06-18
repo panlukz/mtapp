@@ -32,7 +32,7 @@ namespace Mtapp.PageModels
         {
             base.Init(activityId);
 
-            _activity = _activityRepository.GetActivityById((string) activityId);
+            _activity = _activityRepository.GetById((string) activityId);
 
             if (_activity == null)
             {
@@ -47,7 +47,7 @@ namespace Mtapp.PageModels
             {
                 return new Command( async () =>
                 {
-                    _activityRepository.SaveActivity(_activity);
+                    _activityRepository.Save(_activity);
                     await CoreMethods.PopPageModel();
                 });
             }

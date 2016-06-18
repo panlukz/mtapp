@@ -7,19 +7,8 @@ using Mtapp.Models;
 
 namespace Mtapp.Data
 {
-    public interface IActivityRepository
+    public interface IActivityRepository : IRepository<Activity>
     {
-        IEnumerable<Activity> GetAllActivities();
-
-        Activity GetActivityById(string activityId);
-
-        bool SaveActivity(Activity activity);
-
-        void SaveActivities(IEnumerable<Activity> activities);
-
-        bool DeleteActivity(string id);
-
-        bool DeleteActivity(Activity activity);
-
+        IEnumerable<Activity> GetActivitiesFromMonth(int month, int year);
     }
 }

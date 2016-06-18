@@ -6,68 +6,77 @@ using System.Threading.Tasks;
 using Mtapp.Helpers;
 using Mtapp.Models;
 using SQLite;
+using SQLite.Net;
 using SQLiteNetExtensions.Extensions;
 
 namespace Mtapp.Data
 {
-    class ActivityRepository : Repository, IActivityRepository
+    class ActivityRepository : IActivityRepository
     {
-        public ActivityRepository(ISQLite sqlite) : base(sqlite)
+        private readonly SQLiteConnection _db;
+
+        public ActivityRepository(ISQLite sqlite)
         {
-            Connection.CreateTable<Activity>();
-            Connection.CreateTable<ActivityPosition>();
+            _db = sqlite.GetConnection();
+            _db.CreateTable<Activity>();
+            _db.CreateTable<ActivityPosition>();
         }
 
-        public IEnumerable<Activity> GetAllActivities()
+        public IEnumerable<Activity> GetAll()
         {
-            return Connection.Table<Activity>();
+            return _db.Table<Activity>();
         }
 
-        public Activity GetActivityById(string activityId)
+        public Activity GetById(string activityId)
         {
-            return Connection.GetWithChildren<Activity>(activityId);
+            return _db.GetWithChildren<Activity>(activityId);
         }
 
-        public bool SaveActivity(Activity activity)
+        public bool Save(Activity activity)
         {
             int result = 0;
-            if (Connection.Table<Activity>().FirstOrDefault(a => a.Id.Equals(activity.Id)) != null)
-                Connection.UpdateWithChildren(activity);
+            if (_db.Table<Activity>().FirstOrDefault(a => a.Id.Equals(activity.Id)) != null)
+                _db.UpdateWithChildren(activity);
             else
-                Connection.InsertWithChildren(activity);
+                _db.InsertWithChildren(activity);
 
             //TODO consider about this returns!
             return result != 0;
         }
 
-        public void SaveActivities(IEnumerable<Activity> activities)
+        public void SaveAll(IEnumerable<Activity> activities)
         {
-            Connection.BeginTransaction();
+            _db.BeginTransaction();
 
             foreach (Activity activity in activities)
             {
-                SaveActivity(activity);
+                Save(activity);
             }
 
-            Connection.Commit();
+            _db.Commit();
         }
 
-        public bool DeleteActivity(string id)
+        public bool Delete(string id)
         {
             int result = 0;
-            var activityToDelete = Connection.Table<Activity>().FirstOrDefault(a => a.Id.Equals(id));
+            var activityToDelete = _db.Table<Activity>().FirstOrDefault(a => a.Id.Equals(id));
             if (activityToDelete != null)
-                result = Connection.Delete<Activity>(id);
+                result = _db.Delete<Activity>(id);
 
             return result != 0;
         }
 
-        public bool DeleteActivity(Activity activity)
+        public bool Delete(Activity activity)
         {
             int result = 0;
-            result = Connection.Delete<Activity>(activity.Id);
+            result = _db.Delete<Activity>(activity.Id);
 
             return result != 0;
+        }
+
+        public IEnumerable<Activity> GetActivitiesFromMonth(int month, int year)
+        {
+            return _db.Table<Activity>().Where(a => a.Date.Year == year && a.Date.Month == month).ToList();
         }
     }
 }

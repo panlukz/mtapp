@@ -25,7 +25,7 @@ namespace Mtapp.PageModels
 
         protected override void ViewIsAppearing(object sender, EventArgs e)
         {
-            Activities = _activityRepository.GetAllActivities().OrderByDescending(a => a.Date).ToList();
+            Activities = _activityRepository.GetAll().OrderByDescending(a => a.Date).ToList();
         }
 
 
